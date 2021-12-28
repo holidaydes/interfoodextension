@@ -1,0 +1,9 @@
+body {
+    height: 100px;
+    width: 100px;
+    background-color: grey;
+}
+label {
+    font-weight: bold;
+    color: greenyellow;
+}

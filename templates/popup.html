@@ -1,20 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <link rel="stylesheet" href="/css/popup.css"></link>
-  </head>
-  <body>
-    <h3>Select the dish type</h3>
+</head>
+
+<body>
     <form id="optionsForm">
-      <label for="vegetarian">
-        <input type="checkbox" id="vegetarian" name="vegetarian">
-        Vegetarian
-      </label>
-      <label for="mushroom">
-        <input type="checkbox" id="mushroom" name="mushroom">
-        Mushroom
-      </label>
-      <script src="/js/main.js"></script>
+        <div class="div-table">
+            <div class="div-table-row">
+                <div class="div-table-col">
+                    <label>
+                      Filters
+                    </label>
+                </div>
+            </div>
+            <div class="div-table-row">
+                <div class="div-table-col">
+                    <label for="vegetarianCheckbox">
+              <input type="checkbox" id="vegetarianCheckbox" name="vegetarianCheckbox">
+              Vegetarian
+            </label>
+                </div>
+            </div>
+            <div class="div-table-row">
+                <div class="div-table-col">
+                    <label for="mushroomCheckbox">
+              <input type="checkbox" id="mushroomCheckbox" name="mushroomCheckbox">
+              Mushroom
+            </label>
+                </div>
+            </div>
+            <div class="div-table-row">
+                <div class="div-table-col" id="clear-button-col">
+                    <input type="button" id="clearButton" name="clearButton" value="Clear">
+                </div>
+            </div>
+        </div>
     </form>
-  </body>
+    <script src="/js/main.js"></script>
+</body>
+
 </html>

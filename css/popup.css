@@ -1,9 +1,36 @@
 body {
-    height: 100px;
+    height: fit-content;
     width: 100px;
-    background-color: grey;
+    padding: 5px;
 }
+
 label {
     font-weight: bold;
-    color: greenyellow;
+}
+
+.div-table {
+    display: table;
+    width: 100px;
+    border-spacing: 5px;
+}
+
+.div-table-row {
+    display: table-row;
+    width: 100px;
+    clear: both;
+}
+
+.div-table-col {
+    display: table-column;
+    float: left;
+    width: 100px;
+}
+
+#clear-button-col {
+    text-align: center;
+}
+
+#clearButton {
+    width: 100%;
+    display: block;
 }

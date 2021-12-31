@@ -18,68 +18,60 @@ chrome.storage.local.get('options', (data) => {
     }
 })();
 
-function selectVegetarianOptions() {
-    Array.from(document.querySelectorAll('[class^="middle-text food-etlap-szoveg"]'))
-        .forEach(e => {
-            if (e.children.length === 0) {
-                e.parentNode.parentNode.parentNode.style.pointerEvents = 'none'
-                e.parentNode.parentNode.parentNode.style.opacity = '0.3'
+function filterCells(options) {
+    Array.from(document.querySelectorAll('[id^="sorszuro_id-"] > div.scroll-cols > div.wrapper > div.inner > div.cell'))
+    .forEach(
+        cell => {
+            if (
+                (options.vegetarianFilter && cell.children.item(0).children.item(0).children.item(0).children.length === 0) || 
+                (options.mushroomFilter && !cell.children.item(0).children.item(1).innerHTML.includes('gomba'))
+            ) {
+                cell.style.pointerEvents = 'none';
+                cell.style.opacity = '0.3';
+            } else {
+                cell.style.pointerEvents = ''
+                cell.style.opacity = ''
             }
-        });
-}
-
-function selectMushroom() {
-    Array.from(document.querySelectorAll('[class^="middle-text food-etlap-szoveg"]'))
-        .forEach(e => {
-            if (!e.parentNode.parentNode.children.item(1).innerHTML.includes('gomba')) {
-                e.parentNode.parentNode.parentNode.style.pointerEvents = 'none'
-                e.parentNode.parentNode.parentNode.style.opacity = '0.3'
-            }
-        });
+        }
+    );
 }
 
 function clear() {
-    Array.from(document.querySelectorAll('[class^="middle-text food-etlap-szoveg"]'))
-        .forEach(e => {
-            e.parentNode.parentNode.parentNode.style.pointerEvents = ''
-            e.parentNode.parentNode.parentNode.style.opacity = ''
+    Array.from(document.querySelectorAll('[id^="sorszuro_id-"] > div.scroll-cols > div.wrapper > div.inner > div.cell'))
+        .forEach(cell => {
+            cell.style.pointerEvents = ''
+            cell.style.opacity = ''
         });
 }
 
 optionsForm.vegetarianCheckbox.addEventListener("change", async function() {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    options.vegetarianFilter = this.checked;
+
+    options.vegetarianFilter = optionsForm.vegetarianCheckbox.checked;
+    options.mushroomFilter = optionsForm.mushroomCheckbox.checked;
+
     chrome.storage.local.set({ options });
 
-    if (this.checked) {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: selectVegetarianOptions
-        });
-    } else {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: clear
-        });
-    }
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        function: filterCells,
+        args: [options]
+    });
 });
 
 optionsForm.mushroomCheckbox.addEventListener("change", async function() {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    options.mushroomFilter = this.checked;
+
+    options.vegetarianFilter = optionsForm.vegetarianCheckbox.checked;
+    options.mushroomFilter = optionsForm.mushroomCheckbox.checked;
+
     chrome.storage.local.set({ options });
 
-    if (this.checked) {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: selectMushroom
-        });
-    } else {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: clear
-        });
-    }
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        function: filterCells,
+        args: [options]
+    });
 });
 
 optionsForm.clearButton.addEventListener("click", async function() {
@@ -90,6 +82,7 @@ optionsForm.clearButton.addEventListener("click", async function() {
 
     options.vegetarianFilter = false;
     options.mushroomFilter = false;
+
     chrome.storage.local.set({ options });
 
     chrome.scripting.executeScript({

@@ -37,7 +37,7 @@ function filterCells(options) {
                     //mushroom filter
                     (
                         options.mushroomFilter &&
-                        !cell.children.item(0).children.item(1).innerHTML.includes('gomba')
+                        !cell.children.item(0).children.item(0).innerHTML.includes('gomba')
                     ) ||
                     //paleo filter
                     (
